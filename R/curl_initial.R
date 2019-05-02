@@ -1,0 +1,30 @@
+header <- "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+
+set_config(c(
+    # verbose(),
+    timeout(60),
+    add_headers(
+        Connection =  "keep-alive",
+        `Accept-Encoding` = "gzip, deflate, br",
+        `Accept-Language` = "zh-CN,zh;q=0.8,en;q=0.6",
+        # Host = "modis.ornl.gov",
+        # Origin = "https://modis.ornl.gov",
+        # Referer = url,
+        # `Upgrade-Insecure-Requests` = 1,
+        `User-Agent` = header
+    )
+))
+# handle_reset("https://modis.ornl.gov") #quite important
+# Sys.setlocale("LC_TIME", "english")#
+
+#' @export
+xml_check <- function(x){
+    if(class(x)[1] %in% c("xml_document", "xml_node")) x else read_html(x)
+}
+
+#' html_inputs
+#' @export
+html_inputs <- function(p, xpath = "//input"){
+    xml_check(p) %>% xml_find_all(xpath) %>% 
+    {setNames(as.list(xml_attr(., "value")), xml_attr(., "name"))}
+}

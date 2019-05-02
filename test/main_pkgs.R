@@ -1,0 +1,12 @@
+library(magrittr)
+library(httr)
+library(xml2)
+library(rvest)
+library(purrr)
+library(tidyverse)
+library(lubridate)
+library(data.table)
+library(plyr)
+# see my github
+library(Ipaper)
+library(RcurlFlow)
