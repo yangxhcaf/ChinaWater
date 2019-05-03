@@ -12,7 +12,7 @@
 curl_main <- function(date, outdir = ".", prefix = "", FUN = NULL) {
     outfile <- sprintf("%s/%s_%s.csv", outdir, prefix, format(date, "%Y-%m-%d_%H%M"))
 
-    if (!dir.exists(outdir)) {dir.create(outdir)}
+    if (!dir.exists(outdir)) {dir.create(outdir, recursive=TRUE)}
     if (!file.exists(outfile)){
         tryCatch({
             res <- FUN(date)
