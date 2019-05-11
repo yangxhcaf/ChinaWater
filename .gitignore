@@ -6,3 +6,5 @@ log.txt
 *.log
 *.csv
 *.txt
+
+*.cc_token

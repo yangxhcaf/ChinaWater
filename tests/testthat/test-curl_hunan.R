@@ -6,6 +6,7 @@ test_that("curl_hunan works", {
     d_hnsq <- curl_hunan_type(date, "hnsq")
     d_dxsk <- curl_hunan_type(date, "dxsk")
 
+    status <- file.remove(dir("*.csv"))
     ## check data in web page
     # 1. dxsk
     expect_equal(nrow(d_dxsk), 25)

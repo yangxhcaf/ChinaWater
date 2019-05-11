@@ -17,7 +17,7 @@ colnames_reservoir <- c("basin", "prov", "river", "site", "Z", "Q_in", "Z_max")
 colnames_river     <- c("basin", "prov", "river", "site", "time", "Z", "Q", "Z_warn")
 colnames_rain      <- c("basin", "prov", "river", "site", "time", "prcp", "weather")
 
-#' china_water
+#' rt_ChinaWater
 #'
 #' Get China realtime water data.
 #'
@@ -31,7 +31,7 @@ colnames_rain      <- c("basin", "prov", "river", "site", "time", "prcp", "weath
 #' }
 #' @importFrom stringi stri_unescape_unicode
 #' @export
-china_water <- function(type = "reservoir", outdir = ".", timestamp = TRUE){
+rt_ChinaWater <- function(type = "reservoir", outdir = ".", timestamp = TRUE, ...){
     if (type == "reservoir"){
         varnames <- colnames_reservoir
         params   <- params_reservoir
@@ -49,7 +49,7 @@ china_water <- function(type = "reservoir", outdir = ".", timestamp = TRUE){
     doc <- POST2(url, body = params, encode = "form",
             Referer = "http://xxfb.hydroinfo.gov.cn/svg/svghtml.html",
             Host = "xxfb.hydroinfo.gov.cn", 
-            Origin = "http://xxfb.hydroinfo.gov.cn"
+            Origin = "http://xxfb.hydroinfo.gov.cn", ...
         )
     p <- content(doc, encoding = "utf-8")
     str <- str_extract(p, '(?<=").*(?="\\);)') %>%
