@@ -4,12 +4,10 @@ p <- GET(url_root) %>% content()
 url <- "http://222.216.6.171:3379/arcgis/rest/services/gxsh/mapCommon/MapServer/12/query?where=1%3D1&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&f=pjson"
 
 params <- getFormParams(url) %>% as.list()
-
 p <- POST("http://222.216.6.171:3379/arcgis/rest/services/gxsh/mapCommon/MapServer/12/query",
           body = params, encode = "form") %>% content()
 
 p1 <- GET("http://slt.gxzf.gov.cn:9000/gxsl/japi/api/sl323/realtime/river/") %>% content()
-
 p1 <- GET("http://slt.gxzf.gov.cn:9000/gxsl/japi/api/sl323/realtime/river?time=2019-03-05") %>% content()
 
 write_xml(p, "a.html")

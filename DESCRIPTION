@@ -1,4 +1,4 @@
-Package: RcurlFlow
+Package: ChinaWater
 Title: Crawling China flow data
 Version: 0.0.0.9000
 Authors@R: person("Dongdong", "Kong", email = "kongdd.sysu@gmail.com",
@@ -6,11 +6,12 @@ Authors@R: person("Dongdong", "Kong", email = "kongdd.sysu@gmail.com",
 Description: Crawling China flow data.
 Depends: R (>= 3.5.3)
 Imports: httr, xml2, magrittr, rvest, data.table, 
-    stringr, purrr,
+    stringr, stringi, purrr,
     plyr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Suggests: 
-    testthat
+    testthat (>= 2.1.0),
+    covr
