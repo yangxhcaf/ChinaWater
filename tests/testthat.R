@@ -1,4 +1,4 @@
 library(testthat)
-library(RcurlFlow)
+library(ChinaWater)
 
-test_check("RcurlFlow")
+test_check("ChinaWater")

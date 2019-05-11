@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# RcurlFlow
+# ChinaWater
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/kongdd/ChinaWater.svg?branch=master)](https://travis-ci.org/kongdd/ChinaWater)
@@ -25,10 +25,10 @@ Crawl China flow data.
 
 ## Installation
 
-You can install the released version of RcurlFlow from gitlab with:
+You can install the released version of ChinaWater from gitlab with:
 
 ``` r
-devtools::install_gitlab("rcurl/rcurlflow")
+devtools::install_gitlab("rcurl/ChinaWater")
 ```
 
 ## Example
@@ -36,7 +36,7 @@ devtools::install_gitlab("rcurl/rcurlflow")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r example, eval=FALSE}
-library(RcurlFlow)
+library(ChinaWater)
 ## basic example code
 date <- as.POSIXct("2016-04-10 12:00:00")
 curl_main(date, FUN = curl_hunan)
@@ -46,7 +46,7 @@ curl_main(date, FUN = curl_hunan)
 
 | status | 省份 | url                                                | 水位 | 流量 |
 | :----: | ---- | -------------------------------------------------- | :--: | :--: |
-|        | 全国 | http://xxfb.hydroinfo.gov.cn/ssIndex.html          |      |      |
+|   √    | 全国 | http://xxfb.hydroinfo.gov.cn/ssIndex.html          |  √   |  √   |
 |   ×    | 广西 | http://slt.gxzf.gov.cn:9000/page/index.html?act=3  |      |      |
 |   ×    | 广东 | http://www.gdwater.gov.cn:9001/Map/Map.aspx?id=    |  √   |      |
 |   √    | 湖北 | http://113.57.190.228:8001/Web/Report/GetRiverData |  √   |  √   |

@@ -1,5 +1,5 @@
 # source('test/main_pkgs.R')
-library(RcurlFlow)
+library(ChinaWater)
 
 outdir <- "D:/schedule/chinawater/"
 setwd(dirname(outdir))
