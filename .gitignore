@@ -8,3 +8,4 @@ log.txt
 *.txt
 
 *.cc_token
+*.json

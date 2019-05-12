@@ -16,15 +16,3 @@ set_config(c(
 ))
 # handle_reset("https://modis.ornl.gov") #quite important
 # Sys.setlocale("LC_TIME", "english")#
-
-#' @export
-xml_check <- function(x){
-    if(class(x)[1] %in% c("xml_document", "xml_node")) x else read_html(x)
-}
-
-#' html_inputs
-#' @export
-html_inputs <- function(p, xpath = "//input"){
-    xml_check(p) %>% xml_find_all(xpath) %>% 
-    {setNames(as.list(xml_attr(., "value")), xml_attr(., "name"))}
-}

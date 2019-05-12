@@ -8,6 +8,8 @@ Depends: R (>= 3.5.3)
 Imports: httr, xml2, magrittr, rvest, data.table, 
     stringr, stringi, purrr,
     lubridate,
+    jsonlite, 
+    foreach, iterators,
     plyr
 License: GPL-3
 Encoding: UTF-8
