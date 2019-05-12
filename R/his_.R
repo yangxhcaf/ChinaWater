@@ -1,9 +1,9 @@
 #' @export
-curl_hunan <- function(date = Sys.Date(), ...) {
-    d_hnsq <- curl_hunan_type(date, "hnsq")
-    d_dxsk <- curl_hunan_type(date, "dxsk")
+his_hunan <- function(date = Sys.Date(), ...) {
+    d_hnsq <- his_hunan_type(date, "hnsq")
+    d_dxsk <- his_hunan_type(date, "dxsk")
 
-    # d_zykz <- curl_hunan_type(date, "zykz")
+    # d_zykz <- his_hunan_type(date, "zykz")
     list(all = d_hnsq, reservoir = d_dxsk)
 }
 
@@ -25,7 +25,7 @@ curl_hunan <- function(date = Sys.Date(), ...) {
 #' @references
 #' http://61.187.56.156/wap/index_sq.asp
 #' @export
-curl_hunan_type <- function(date = Sys.Date(), type = "hnsq", ...) {
+his_hunan_type <- function(date = Sys.Date(), type = "hnsq", ...) {
     # names for hnsq
     names_hnsq <- c('水系', '河名', '站名', '时间', '水位', '涨落', '较前日8时', '流量',
         '警戒水位', '历史最高水位', '发生时间', '所属地区', '所在县', '控制面积')
@@ -81,7 +81,7 @@ curl_hunan_type <- function(date = Sys.Date(), type = "hnsq", ...) {
 #' http://113.57.190.228:8001/web/Report/RiverReport#
 #'
 #' @export
-curl_hubei <- function(date, ...) {
+his_hubei <- function(date, ...) {
     url_root <- "http://113.57.190.228:8001/Web/Report/GetRiverData?date="
     url <- sprintf("%s%s", url_root, format(date, "%Y-%m-%d %H:%M")) %>% URLencode()
 
@@ -97,7 +97,7 @@ curl_hubei <- function(date, ...) {
 
 #' Yellow river
 #' @export
-curl_yellowRiver <- function(date, ...){
+his_yellowRiver <- function(date, ...){
     url_root <- "http://61.163.88.227:8006/hwsq.aspx?tdsourcetag=s_pctim_aiomsg"
     outfile <- sprintf("yr_%s.csv", date)
     params[[4]] <- date

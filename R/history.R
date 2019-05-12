@@ -5,11 +5,12 @@
 #' library(lubridate)
 #' dates <- seq(ymd("1946-01-01"), ymd("2019-04-25"), by = "day") #%>% format()
 #' dates <- {dates + dhours(c(8))} %>% set_names(format_POSIXt(.))
-#' l_ply(dates[1:8], download, outdir = "hubei", prefix = "hubei",
-#'      FUN = curl_hubei)
+#' plyr::l_ply(dates[1:8], history, outdir = "hubei", prefix = "hubei",
+#'      FUN = his_hubei)
 #' }
+#' 
 #' @export
-curl_main <- function(date, outdir = ".", prefix = "", FUN = NULL) {
+history <- function(date, outdir = ".", prefix = "", FUN = NULL) {
     outfile <- sprintf("%s/%s_%s.csv", outdir, prefix, format(date, "%Y-%m-%d_%H%M"))
 
     if (!dir.exists(outdir)) {dir.create(outdir, recursive=TRUE)}

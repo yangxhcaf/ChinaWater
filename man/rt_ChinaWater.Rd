@@ -15,8 +15,8 @@ Get China realtime water data.
 }
 \examples{
 \dontrun{
-d_sk    <- china_water('reservoir')
-d_river <- china_water('river')
-d_rain  <- china_water('rain')
+d_sk    <- rt_ChinaWater('reservoir')
+d_river <- rt_ChinaWater('river')
+d_rain  <- rt_ChinaWater('rain')
 }
 }

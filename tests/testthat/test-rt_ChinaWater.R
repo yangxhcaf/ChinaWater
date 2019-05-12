@@ -1,4 +1,6 @@
 verb <- NULL # verbose()
+skip_if_not(is_test_rtChinaWater)
+
 test_that("china_water reservoir works", {
     expect_true({
         d_sk <- realtime(rt_ChinaWater, type='reservoir', verb)

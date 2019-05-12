@@ -25,10 +25,10 @@ Crawl China flow data.
 
 ## Installation
 
-You can install the released version of ChinaWater from gitlab with:
+You can install the released version of ChinaWater from github with:
 
 ``` r
-devtools::install_gitlab("rcurl/ChinaWater")
+devtools::install_github("rcurl/ChinaWater")
 ```
 
 ## Example
@@ -39,7 +39,7 @@ This is a basic example which shows you how to solve a common problem:
 library(ChinaWater)
 ## basic example code
 date <- as.POSIXct("2016-04-10 12:00:00")
-curl_main(date, FUN = curl_hunan)
+history(date, FUN = his_hunan)
 ```
 
 **Table 1.** 中国水位流量数据

@@ -25,9 +25,9 @@ colnames_rain      <- c("basin", "prov", "river", "site", "time", "prcp", "weath
 #'
 #' @examples
 #' \dontrun{
-#' d_sk    <- china_water('reservoir')
-#' d_river <- china_water('river')
-#' d_rain  <- china_water('rain')
+#' d_sk    <- rt_ChinaWater('reservoir')
+#' d_river <- rt_ChinaWater('river')
+#' d_rain  <- rt_ChinaWater('rain')
 #' }
 #' @importFrom stringi stri_unescape_unicode
 #' @export
@@ -48,7 +48,7 @@ rt_ChinaWater <- function(type = "reservoir", outdir = ".", timestamp = TRUE, ..
 
     doc <- POST2(url, body = params, encode = "form",
             Referer = "http://xxfb.hydroinfo.gov.cn/svg/svghtml.html",
-            Host = "xxfb.hydroinfo.gov.cn", 
+            Host = "xxfb.hydroinfo.gov.cn",
             Origin = "http://xxfb.hydroinfo.gov.cn", ...
         )
     p <- content(doc, encoding = "utf-8")
@@ -76,7 +76,7 @@ rt_ChinaWater <- function(type = "reservoir", outdir = ".", timestamp = TRUE, ..
         d <- cbind(system.time = date_sys, d)
     }
 
-    outfile <- sprintf('%s/chinawater_%s (%s).txt', outdir, type, 
+    outfile <- sprintf('%s/chinawater_%s (%s).txt', outdir, type,
         format(time_system, "%Y%m%d-%H%M00"))
     fwrite(d, outfile)
     d

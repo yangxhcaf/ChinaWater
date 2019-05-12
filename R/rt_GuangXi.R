@@ -7,9 +7,8 @@
 #' @export
 rt_GuangXi <- function(outdir = ".", timestamp = TRUE, ...){
     # url <- "http://xxfb.hydroinfo.gov.cn/ssIndex.html"
-    url <- "http://slt.gxzf.gov.cn:9000/gxsl/japi/api/sl323/realtime/river"
-
-    doc <- GET2(url, Referer = "http://slt.gxzf.gov.cn:9000/page/index.html?act=3", ...)
+    doc <- GET2("http://slt.gxzf.gov.cn:9000/gxsl/japi/api/sl323/realtime/river", 
+        add_headers(Referer = "http://slt.gxzf.gov.cn:9000/page/index.html?act=3"), ...)
     d <- content(doc, encoding = "utf-8")$result %>% map_df(as.data.table) %>%
         data.table() %>% reorder_name("TM")
     d$TM <- as_datetime(d$TM/1e3) %>% format()

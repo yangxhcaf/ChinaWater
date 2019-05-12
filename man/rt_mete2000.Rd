@@ -4,22 +4,30 @@
 \alias{rt_mete2000}
 \title{rt_mete2000}
 \usage{
-rt_mete2000(stations = NULL, date_begin, date_end, type = c("wap",
-  "api"), outdir = ".", ...)
+rt_mete2000(stations = NULL, date_begin = NULL,
+  date_end = Sys.time(), type = c("wap", "api"), outdir = "OUTPUT",
+  limits = NULL, times = 3, ...)
 }
 \arguments{
-\item{date_begin}{POSIXct obj}
+\item{date_begin}{POSIXct obj, or character in the format of "%Y%m%d%H",
+e.g "2019050518".}
 
 \item{date_end}{as date_begin}
 
-\item{limits}{process how many sites}
+\item{type}{"api" or "wap"}
+
+\item{limits}{If not null, only process limits sites group}
+
+\item{times}{max trying times}
 }
 \description{
 This function only retrieves least 7 days meteorological data.
 }
 \examples{
+\dontrun{
 info <- jsonlite::read_json('user_cma.json')
 login_cma(info$user, info$pwd)
-rt_mete2000()
+d <- rt_mete2000(date_end = "2019050518")
+}
 
 }

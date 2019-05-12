@@ -7,6 +7,10 @@
 login_cma(user, pwd, times = 3)
 }
 \arguments{
+\item{user}{character}
+
+\item{pwd}{character}
+
 \item{times}{max trying times}
 }
 \description{

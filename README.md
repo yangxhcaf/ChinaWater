@@ -14,32 +14,35 @@ Crawl China flow data.
 
 ## Installation
 
-You can install the released version of ChinaWater from gitlab with:
+You can install the released version of ChinaWater from github with:
 
 ``` r
-devtools::install_gitlab("kongdd/ChinaWater")
+devtools::install_github("kongdd/ChinaWater")
 ```
 
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
+```{r example, eval=FALSE}
 library(ChinaWater)
 ## basic example code
 date <- as.POSIXct("2016-04-10 12:00:00")
-curl_main(date, FUN = curl_hunan)
+history(date, FUN = his_hunan)
 ```
 
 **Table 1.** 中国水位流量数据
 
-| status | 省份 | url                                                | 水位 | 流量 |
-| :----: | ---- | -------------------------------------------------- | :--: | :--: |
-|   √    | 全国 | http://xxfb.hydroinfo.gov.cn/ssIndex.html          |  √   |  √   |
-|   ×    | 广西 | http://slt.gxzf.gov.cn:9000/page/index.html?act=3  |      |      |
-|   ×    | 广东 | http://www.gdwater.gov.cn:9001/Map/Map.aspx?id=    |  √   |      |
-|   √    | 湖北 | http://113.57.190.228:8001/Web/Report/GetRiverData |  √   |  √   |
-|   √    | 湖南 | http://61.187.56.156/wap/hnsq_BB2.asp              |  √   |  √   |
+| status | 省份 | 站点数 | url                                                          | 水位 | 流量 | 备注                   |
+| :----: | ---- | ------ | ------------------------------------------------------------ | :--: | :--: | ---------------------- |
+|   √    | 全国 |        | http://xxfb.hydroinfo.gov.cn/ssIndex.html                    |  √   |  √   |                        |
+|   ×    | 广西 |        | http://slt.gxzf.gov.cn:9000/page/index.html?act=3            |      |      |                        |
+|   ×    | 广东 |        | http://www.gdwater.gov.cn:9001/Map/Map.aspx?id=              |  √   |      |                        |
+|   √    | 湖北 |        | http://113.57.190.228:8001/Web/Report/GetRiverData           |  √   |  √   |                        |
+|   √    | 湖南 |        | http://61.187.56.156/wap/hnsq_BB2.asp                        |  √   |  √   |                        |
+|   ×    | 江苏 |        | http://jssslt.jiangsu.gov.cn/, [水雨情](http://221-226-28-67.ipv6.jssslt.jiangsu.gov.cn:88/jsswxxSSI/Web/Default.html?m=2) |      |      | 数据显示为图片，难转换 |
+|   √    | 江西 |        | http://111.75.205.66/slxxhw/jhsq/index.html                  |  √   |  √   |                        |
+|   x    | 浙江 | 4127   | http://www.zjsq.net.cn:8080/report/monitor/monitor.jsp       |  √   |  x   |                        |
 
 
 # Acknowledgements

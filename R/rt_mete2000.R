@@ -1,6 +1,9 @@
 #' login_cma
-#' @param times max trying times
-#'
+#' 
+#' @param user character
+#' @param pwd character
+#' @inheritParams RETRY
+#' 
 #' @export
 login_cma <- function(user, pwd, times=3){
     params <- list(
@@ -10,41 +13,19 @@ login_cma <- function(user, pwd, times=3){
         url = "/app/Rest/userService/991810576@qq.com/Xiuyuan156//userLogin"
     )
 
+    status <- FALSE
     for (i in 1:times) {
         doc <- POST("http://data.cma.cn/wa/?r=rest/index&url", body = params)
         r <- xml_json(doc)
         if (r$code == 200) {
             cat(sprintf("[cma] Login success: welcome back %s\n", r$content$name))
+            status <- TRUE
             break()
         } else {
             message(sprintf("[cma] login failed!"))
         }
     }
-}
-
-#' get_mete2000_stations
-#' It has been saved in \code{data('st_hourly')}.
-#' @export
-get_mete2000_stations <- function() {
-    p <- GET("http://data.cma.cn/Market/Detail/code/A.0012.0001/type/0.html") %>%
-        content(encoding = "utf-8")
-
-    prov <- xml_find_all(p, "//div[@class='jmarkImCl1AtItTe']") %>% {
-        id <- xml_attr(., "id") %>% as.numeric()
-        name <-  xml_text(.)
-        data.table(id, name)[id > 10, ]
-    }
-
-    get_station <- function(url) {
-        l <- GET(url) %>% content(encoding = "utf-8") %>% xml_text() %>% fromJSON()
-        cbind(prov = l$cityName, l$stations)
-    }
-
-    urls <- sprintf("http://data.cma.cn/dataService/ajax/act/getStationsByProvinceID/dataCode/A.0012.0001.html?provinceID=%s",
-                    prov$id)
-    res <- llply(urls, get_station, .progress = "text")
-    st  <- do.call(rbind, res) %>% data.table
-    st
+    return(status)
 }
 
 # http://data.cma.cn/dataService/ajax/act/getStationsByProvinceID/dataCode/A.0012.0001.html
@@ -55,29 +36,47 @@ items_mete2000 <- "PRS,PRS_Sea,PRS_Max,PRS_Min,TEM,TEM_Max,TEM_Min,RHU,RHU_Min,V
 #'
 #' This function only retrieves least 7 days meteorological data.
 #'
-#' @param date_begin POSIXct obj
+#' @param date_begin POSIXct obj, or character in the format of "%Y%m%d%H",
+#' e.g "2019050518".
 #' @param date_end as date_begin
-#'
-#' @param limits process how many sites
+#' @param type "api" or "wap"
+#' @param limits If not null, only process limits sites group
+#' @inheritParams RETRY
 #'
 #' @examples
+#' \dontrun{
 #' info <- jsonlite::read_json('user_cma.json')
 #' login_cma(info$user, info$pwd)
-#' rt_mete2000()
-#'
+#' d <- rt_mete2000(date_end = "2019050518")
+#'}
+#' 
 #' @import foreach iterators
 #' @importFrom jsonlite fromJSON
 #' @importFrom data.table last
 #' @importFrom lubridate ddays
-#' 
+#'
 #' @export
-rt_mete2000 <- function(stations = NULL,
-    date_begin = Sys.time() - ddays(7),
+rt_mete2000 <- function(
+    stations = NULL,
+    date_begin = NULL,
     date_end = Sys.time(),
-    type = c("wap", "api"), outdir = "OUTPUT/.", ...)
+    type = c("wap", "api"), 
+    outdir = "OUTPUT",
+    limits = NULL, 
+    times = 3, ...)
 {
+    check_date <- function(x){
+        if (is.character(x)) x <- as.POSIXct(x, format = "%Y%m%d%H")
+        x
+    }
+
+    date_end   %<>% check_date()
+    if (is.null(date_begin)) date_begin <- date_end - ddays(7)
+    date_begin %<>% check_date()
+
     outdir <- check_dir(outdir)
-    
+
+    # if returnCode != 0, then throw error
     main <- function(FUN, str_stations, timeRange, ...){
         doc <- FUN(str_stations, timerange, ...)
         l <- xml_json(doc)
@@ -95,43 +94,68 @@ rt_mete2000 <- function(stations = NULL,
     type = type[1]
     if (is.null(stations)) {
         data('st_hourly')
-        st <- st_hourly
-
-        chunksize <- ifelse(type == "api", 30, 120)
-        nchunks  <- ceiling(nrow(st)/chunksize)
-
-        stations <- chunk(st$StationID, n = nchunks)
+        stations <- st_hourly$StationID
     }
-    if (!is.list(stations)) stations <- list(stations)
+
+    chunksize <- ifelse(type == "api", 30, 120)
+    nchunks  <- ceiling(length(stations)/chunksize)
+    lst_stations <- chunk(stations, n = nchunks)
 
     # timerange
     # date_end <- Sys.time() - 10
     # date_begin <- date_end - ddays(7)
-    timerange <- c(date_begin, date_end) %>% format("%Y%m%d%H0000") %>%
+    timerange  <- c(date_begin, date_end) %>% format("%Y%m%d%H0000") %>%
         { sprintf("[%s,%s]", .[1], .[2]) }
+    timerange2 <- simplifyTimeRange(timerange)
 
     FUN <- switch(type, wap = rt_mete_wap, api = rt_mete_api)
 
     # MAIN scripts
-    ngrp <- length(stations)
-    outfiles <- sprintf("%s/mete2000_%s_%02dth(%d).csv", outdir, timerange, 1:ngrp, ngrp)
+    ngrp <- length(lst_stations)
+    outfiles <- sprintf("%s/mete2000_%s_%02dth(%d).csv", outdir, timerange2, 1:ngrp, ngrp)
 
-    res <- foreach(station = stations, outfile = outfiles, i = icount()) %do% {
+    if (is.null(limits)) limits <- ngrp
+
+    res <- foreach(station = lst_stations, outfile = outfiles, i = icount(limits)) %do% {
         runningId(i)
         if (!file.exists(outfile)) {
             str_stations <- paste(station, collapse = ",")
-            d <- RETRY(main, FUN, str_stations, timerange, ..., times = 1)
-            if (is.dtaa.frame(d) && nrow(d) > 0) fwrite(d, outfile)
+            d <- RETRY(main, FUN, str_stations, timerange, ..., times = times)
+            if (is.data.frame(d) && nrow(d) > 0) fwrite(d, outfile)
             d
         }
     }
+
+    union_mete2000_files(outdir, timerange2)
     do.call(rbind, res)
 }
 
+# @param timerange character
+simplifyTimeRange <- function(timerange){
+    gsub("-00-00|0{4}(?=,|])|-| ", "", timerange, perl = TRUE)
+}
+
+
+#' union_mete2000_files
+#'
+#' @examples
+#' \dontrun{
+#' union_mete2000_files("OUTPUT/", "[2019042818,2019050518]")
+#' }
+#'
+#' @importFrom data.table setkeyv
 #' @export
 union_mete2000_files <- function(outdir, timerange){
-    files <- dir(outdir, pattern = sprintf("\\%s*.csv$", timerange), full.names = TRUE)
-    if (length(files) == ngrp) {
+    files <- dir(outdir, pattern = sprintf("\\%s_.*csv$", timerange), full.names = TRUE)
+    if (length(files) == 0) {
+        warning(sprintf("[e] union_mete2000_files, %s: not file found", timerange))
+        return()
+    }
+
+    ngrp  <- basename(files[1]) %>% str_extract("(?<=\\()\\d{1,3}(?=\\))") %>% as.numeric()
+    n_left <- ngrp - length(files)
+
+    if (n_left == 0) {
         df <- map(files, fread) %>% do.call(rbind, .)
         df[, `:=`(date = sprintf("%04d-%02d-%02d %02d-00-00", Year, Mon, Day, Hour),
                   Year = NULL, Mon = NULL, Day = NULL, Hour = NULL)]
@@ -140,17 +164,25 @@ union_mete2000_files <- function(outdir, timerange){
 
         # rm last 2hour imcomplete
         info <- df[, .N, .(date)]
+        date_end  <- info$date %>% last()
         date_last <- info[N >= 2167, date] %>% last()
+
         df_trim <- df[date <= date_last, ]
 
-        timerange2 <- df_trim$date %>% range() %>% gsub("-| |00-00$", "", .) %>%
+        if (nrow(df_trim) < nrow(df)) {
+            message(sprintf("[w] date with imcomplete data is removed: (%s, %s]",
+                            date_last, date_end))
+        }
+
+        timerange2 <- df_trim$date %>% range() %>% simplifyTimeRange() %>%
             {sprintf("[%s,%s]", .[1], .[2])}
         outfile <- sprintf("%s/mete2000_complete_%s.csv", outdir, timerange2)
         fwrite(df_trim, outfile)
         # the last two hour is not complete
-        
         # rm files pices
         file.remove(files)
+    } else {
+        message(sprintf("[w] not finished! %d files left ...", n_left))
     }
 }
 
@@ -177,9 +209,34 @@ rt_mete_wap <- function(str_stations, timerange, ...) {
         elements                = items_mete2000,
         url                     = "/app/Rest/dataService/search"
     )
-    doc <- POST("http://data.cma.cn/wa/?r=rest/index&url",
+    doc <- POST2("http://data.cma.cn/wa/?r=rest/index&url",
         body = params_wap,
         encode = "form",
-        add_headers(Referer='http://data.cma.cn/wa/?r=site/materialquery'))
+        add_headers(Referer='http://data.cma.cn/wa/?r=site/materialquery'), ...)
     doc
+}
+
+#' get_mete2000_stations
+#' It has been saved in \code{data('st_hourly')}.
+#' @export
+get_mete2000_stations <- function() {
+    p <- GET("http://data.cma.cn/Market/Detail/code/A.0012.0001/type/0.html") %>%
+        content(encoding = "utf-8")
+
+    prov <- xml_find_all(p, "//div[@class='jmarkImCl1AtItTe']") %>% {
+        id <- xml_attr(., "id") %>% as.numeric()
+        name <-  xml_text(.)
+        data.table(id, name)[id > 10, ]
+    }
+
+    get_station <- function(url) {
+        l <- GET(url) %>% content(encoding = "utf-8") %>% xml_text() %>% fromJSON()
+        cbind(prov = l$cityName, l$stations)
+    }
+
+    urls <- sprintf("http://data.cma.cn/dataService/ajax/act/getStationsByProvinceID/dataCode/A.0012.0001.html?provinceID=%s",
+                    prov$id)
+    res <- llply(urls, get_station, .progress = "text")
+    st  <- do.call(rbind, res) %>% data.table
+    st
 }
