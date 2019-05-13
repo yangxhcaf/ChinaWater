@@ -7,6 +7,10 @@
 rt_GuangXi(outdir = ".", timestamp = TRUE, ...)
 }
 \arguments{
+\item{outdir}{directory of output files}
+
+\item{timestamp}{boolean, whether include a timestamp to returned data.frame}
+
 \item{...}{other parameters to [GET2()] or [POST2()]}
 }
 \description{

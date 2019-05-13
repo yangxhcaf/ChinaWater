@@ -19,8 +19,9 @@ colnames_rain      <- c("basin", "prov", "river", "site", "time", "prcp", "weath
 
 #' rt_ChinaWater
 #'
-#' Get China realtime water data.
+#' Get China curl_realtime water data.
 #'
+#' @inheritParams curl_realtime
 #' @param type reservoir, river, rain
 #'
 #' @examples

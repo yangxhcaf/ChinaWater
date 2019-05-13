@@ -1,21 +1,21 @@
 Package: ChinaWater
 Title: Crawling China flow data
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: person("Dongdong", "Kong", email = "kongdd.sysu@gmail.com",
   role = c("aut", "cre"))
 Description: Crawling China flow data.
-Depends: R (>= 3.5.3)
+Depends: R (>= 3.4)
 Imports: httr, xml2, magrittr, rvest, data.table, 
     stringr, stringi, purrr,
     glue,
     lubridate,
     jsonlite, 
     foreach, iterators,
-    plyr
+    plyr, 
+    covr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Suggests: 
-    testthat (>= 2.1.0),
-    covr
+    testthat (>= 2.1.0)

@@ -1,9 +1,9 @@
 #' login_cma
-#' 
+#'
 #' @param user character
 #' @param pwd character
-#' @inheritParams RETRY
-#' 
+#' @inheritParams RETRY2
+#'
 #' @export
 login_cma <- function(user, pwd, times=3){
     params <- list(
@@ -41,7 +41,8 @@ items_mete2000 <- "PRS,PRS_Sea,PRS_Max,PRS_Min,TEM,TEM_Max,TEM_Min,RHU,RHU_Min,V
 #' @param date_end as date_begin
 #' @param type "api" or "wap"
 #' @param limits If not null, only process limits sites group
-#' @inheritParams RETRY
+#' @inheritParams RETRY2
+#' @inheritParams curl_realtime
 #'
 #' @examples
 #' \dontrun{
@@ -49,7 +50,7 @@ items_mete2000 <- "PRS,PRS_Sea,PRS_Max,PRS_Min,TEM,TEM_Max,TEM_Min,RHU,RHU_Min,V
 #' login_cma(info$user, info$pwd)
 #' d <- rt_mete2000(date_end = "2019050518")
 #'}
-#' 
+#'
 #' @import foreach iterators
 #' @importFrom jsonlite fromJSON
 #' @importFrom data.table last
@@ -60,9 +61,9 @@ rt_mete2000 <- function(
     stations = NULL,
     date_begin = NULL,
     date_end = Sys.time(),
-    type = c("wap", "api"), 
+    type = c("wap", "api"),
     outdir = "OUTPUT",
-    limits = NULL, 
+    limits = NULL,
     times = 3, ...)
 {
     check_date <- function(x){
@@ -120,7 +121,7 @@ rt_mete2000 <- function(
         runningId(i)
         if (!file.exists(outfile)) {
             str_stations <- paste(station, collapse = ",")
-            d <- RETRY(main, FUN, str_stations, timerange, ..., times = times)
+            d <- RETRY2(main, FUN, str_stations, timerange, ..., times = times)
             if (is.data.frame(d) && nrow(d) > 0) fwrite(d, outfile)
             d
         }
@@ -138,6 +139,9 @@ simplifyTimeRange <- function(timerange){
 
 #' union_mete2000_files
 #'
+#' @inheritParams curl_realtime
+#' @param timerange e.g. "[2019042818,2019050518]"
+#' 
 #' @examples
 #' \dontrun{
 #' union_mete2000_files("OUTPUT/", "[2019042818,2019050518]")

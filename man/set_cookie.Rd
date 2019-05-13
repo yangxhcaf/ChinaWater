@@ -9,7 +9,14 @@ set_cookie(cookiefile = "cookies.txt")
 
 write_cookie(cookies, cookiefile = "cookies.txt")
 }
-\description{
+\arguments{
+\item{cookiefile}{path of cookie file
+
 set_config() works globaly, but will not return cookie to reponse object.
-Reversely, set_cookies() works locally, and return cookie to response object.
+Reversely, set_cookies() works locally, and return cookie to response object.}
+
+\item{cookies}{data.frame object, at least with "name" and "value".}
+}
+\description{
+once cookie exist, it's impossible to update by set_cookie
 }

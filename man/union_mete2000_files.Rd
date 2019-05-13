@@ -6,6 +6,11 @@
 \usage{
 union_mete2000_files(outdir, timerange)
 }
+\arguments{
+\item{outdir}{directory of output files}
+
+\item{timerange}{e.g. "[2019042818,2019050518]"}
+}
 \description{
 union_mete2000_files
 }

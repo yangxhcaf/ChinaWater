@@ -9,3 +9,6 @@ log.txt
 
 *.cc_token
 *.json
+
+# DIR
+task/

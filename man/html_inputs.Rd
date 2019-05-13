@@ -6,6 +6,11 @@
 \usage{
 html_inputs(p, xpath = "//input")
 }
+\arguments{
+\item{p}{requested object from httr}
+
+\item{xpath}{A string containing a xpath (1.0) expression.}
+}
 \description{
 html_inputs
 }

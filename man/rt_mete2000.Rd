@@ -16,9 +16,13 @@ e.g "2019050518".}
 
 \item{type}{"api" or "wap"}
 
+\item{outdir}{directory of output files}
+
 \item{limits}{If not null, only process limits sites group}
 
 \item{times}{max trying times}
+
+\item{...}{others to \code{FUN}}
 }
 \description{
 This function only retrieves least 7 days meteorological data.

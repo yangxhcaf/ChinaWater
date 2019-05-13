@@ -28,7 +28,12 @@ This is a basic example which shows you how to solve a common problem:
 library(ChinaWater)
 ## basic example code
 date <- as.POSIXct("2016-04-10 12:00:00")
-history(date, FUN = his_hunan)
+curl_history(date, FUN = his_HuNan)
+```
+
+## Update code coverage  
+```r
+covr::codecov(token = "f61ac16f-e11d-400d-82b7-84559e80920f")
 ```
 
 **Table 1.** 中国水位流量数据

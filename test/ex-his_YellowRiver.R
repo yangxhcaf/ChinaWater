@@ -12,7 +12,7 @@ date <- ymd("2019-03-03")
 dates <- seq(ymd("2001-01-01"), ymd("2019-03-05"), by = "day") %>% format()
 
 d <- his_yellowRiver(date)
-l_ply(dates, history, outdir = "hunan", prefix = "hunan", 
+l_ply(dates, curl_history, outdir = "hunan", prefix = "hunan", 
     FUN = his_yellowRiver)
     # .progress = "text", 
     # .parallel = TRUE)

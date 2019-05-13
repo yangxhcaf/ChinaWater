@@ -4,7 +4,12 @@
 \alias{params2url}
 \title{constuct URL based on query parameters}
 \usage{
-params2url(urlRaw, params)
+params2url(url, params)
+}
+\arguments{
+\item{url}{the url of the page to retrieve}
+
+\item{params}{list}
 }
 \description{
 constuct URL based on query parameters

@@ -1,10 +1,10 @@
-context("test-his_hunan")
+context("test-his_HuNan")
 
-test_that("his_hunan works", {
+test_that("his_HuNan works", {
     expect_equal(2 * 2, 4)
     date <- as.POSIXct("2016-04-10 12:00:00")
-    d_hnsq <- his_hunan_type(date, "hnsq")
-    d_dxsk <- his_hunan_type(date, "dxsk")
+    d_hnsq <- his_HuNan_type(date, "hnsq")
+    d_dxsk <- his_HuNan_type(date, "dxsk")
 
     status <- file.remove(dir("*.csv"))
     ## check data in web page

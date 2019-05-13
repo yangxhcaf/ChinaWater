@@ -11,6 +11,11 @@ POST2(..., cookiefile = "cookies.txt")
 }
 \arguments{
 \item{...}{other parameters will be passed to [GET()] or [POST()]}
+
+\item{cookiefile}{path of cookie file
+
+set_config() works globaly, but will not return cookie to reponse object.
+Reversely, set_cookies() works locally, and return cookie to response object.}
 }
 \description{
 request url with cookiefile

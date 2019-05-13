@@ -4,7 +4,12 @@
 \alias{chunk}
 \title{split into nchunks}
 \usage{
-chunk(x, n)
+chunk(x, nchunk)
+}
+\arguments{
+\item{x}{numeric vector or list}
+
+\item{nchunk}{integer}
 }
 \description{
 split into nchunks

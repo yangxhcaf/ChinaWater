@@ -1,5 +1,10 @@
 #' split into nchunks
-chunk <- function(x,n) split(x, cut(seq_along(x), n, labels = FALSE))
+#' 
+#' @param x numeric vector or list
+#' @param nchunk integer
+#' 
+#' @export
+chunk <- function(x, nchunk) split(x, cut(seq_along(x), nchunk, labels = FALSE))
 
 runningId <- function(i, step = 1, N, prefix = "") {
     perc <- ifelse(missing(N), "", sprintf(", %.1f%% ", i/N*100))
@@ -21,17 +26,20 @@ xml_check <- function(x){
 }
 
 #' html_inputs
+#' @param p requested object from httr
+#' @param xpath A string containing a xpath (1.0) expression.
+#' 
 #' @export
 html_inputs <- function(p, xpath = "//input"){
     xml_check(p) %>% xml_find_all(xpath) %>% 
     {setNames(as.list(xml_attr(., "value")), xml_attr(., "name"))}
 }
 
-#' timestamp
+#' datestamp
 #' 
 #' @return time stamp, just like 1498029994455 (length of 13)
 #' @export
-timestamp <- function() as.character(floor(as.numeric(Sys.time())*1000))
+datestamp <- function() as.character(floor(as.numeric(Sys.time())*1000))
 
 #' @export
 save_html <- function(x, file = "kong.html") write_xml(xml_check(x), file)
@@ -65,8 +73,10 @@ cookies2list <- function(cookies){
 }
 
 #' convert Raw format string into the real raw format variable
-#' @param raw format string
+#' 
+#' @param str format string
 #' @return raw vector
+#' 
 #' @examples 
 #' \dontrun{
 #' key_p <- "EB2A38568661887FA180BDDB5CABD5F21C7BFD59C090CB2D245A87AC253062882729

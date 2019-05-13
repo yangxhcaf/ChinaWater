@@ -29,8 +29,8 @@ l_ply(1:ncluster, function(i){
 }, .parallel = TRUE)
 
 outdir <- "../OUTPUT/flow_hunan/"
-l_ply(dates, history, outdir = outdir, prefix = "hunan",
-    FUN = his_hunan,
+l_ply(dates, curl_history, outdir = outdir, prefix = "hunan",
+    FUN = his_HuNan,
     # .progress = "text",
     .parallel = TRUE)
 

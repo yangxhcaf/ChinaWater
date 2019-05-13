@@ -9,9 +9,15 @@ rt_ChinaWater(type = "reservoir", outdir = ".", timestamp = TRUE,
 }
 \arguments{
 \item{type}{reservoir, river, rain}
+
+\item{outdir}{directory of output files}
+
+\item{timestamp}{boolean, whether include a timestamp to returned data.frame}
+
+\item{...}{others to \code{FUN}}
 }
 \description{
-Get China realtime water data.
+Get China curl_realtime water data.
 }
 \examples{
 \dontrun{

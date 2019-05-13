@@ -1,5 +1,7 @@
 #' once cookie exist, it's impossible to update by set_cookie
 #' 
+#' @param cookiefile path of cookie file
+#' 
 #' set_config() works globaly, but will not return cookie to reponse object.
 #' Reversely, set_cookies() works locally, and return cookie to response object.
 #' @export
@@ -16,6 +18,7 @@ set_cookie <- function(cookiefile = "cookies.txt"){
     }
 }
 
+#' @param cookies data.frame object, at least with "name" and "value".
 #' @rdname set_cookie
 #' 
 #' @export
@@ -27,7 +30,9 @@ write_cookie <- function(cookies, cookiefile = "cookies.txt"){
 
 #' request url with cookiefile
 #' 
+#' @inheritParams set_cookie
 #' @param ... other parameters will be passed to [GET()] or [POST()]
+#' 
 #' @export
 GET2 <- function(..., cookiefile = "cookies.txt") {
     p <- GET(..., set_cookie(cookiefile))

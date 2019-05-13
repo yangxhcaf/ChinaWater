@@ -7,7 +7,7 @@
 stringToRaw(str)
 }
 \arguments{
-\item{raw}{format string}
+\item{str}{format string}
 }
 \value{
 raw vector

@@ -20,11 +20,11 @@ temp <- l_ply(1:6, function(i){
     })
 }, .parallel = TRUE)
 
-l_ply(dates, history, outdir = "hubei", prefix = "hubei",
-      FUN = his_hubei,
+l_ply(dates, curl_history, outdir = "hubei", prefix = "hubei",
+      FUN = his_HuBei,
       .parallel = TRUE)
 
-# download(dates[1:4], outdir = "hubei", prefix = "hubei", FUN = his_hubei)
+# download(dates[1:4], outdir = "hubei", prefix = "hubei", FUN = his_HuBei)
 
 files <- dir("hubei", "*.csv", full.names = TRUE)
 
