@@ -10,8 +10,10 @@
 #' column in the dataset the preceding \\ is removed
 #' 
 #' @examples
+#' \dontrun{
 #' d <- task_ls()
 #' d
+#' }
 #' @export
 task_ls <- function(taskname = NULL, wildcard = FALSE, encoding = 'UTF-8', ...){
     

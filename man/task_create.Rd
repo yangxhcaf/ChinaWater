@@ -97,8 +97,8 @@ task_create(taskname = "myfancyscript_withargs_a", rscript = myscript,
 task_create(taskname = "myfancyscript_withargs_b", rscript = myscript,
   schedule = "MINUTE", rscript_args = c("productabc", "20150101"))
   
-alltasks <- task_ls()
-subset(alltasks, TaskName \%in\% c("myfancyscript", "myfancyscriptdaily"))
+# alltasks <- task_ls()
+# subset(alltasks, TaskName \%in\% c("myfancyscript", "myfancyscriptdaily"))
 # The field TaskName might have been different on Windows with non-english language locale
 
 task_delete(taskname = "myfancyscript")
@@ -107,10 +107,6 @@ task_delete(taskname = "myfancyscript_sun")
 task_delete(taskname = "myfancyscript_5min")
 task_delete(taskname = "myfancyscript_withargs_a")
 task_delete(taskname = "myfancyscript_withargs_b")
-
-## Have a look at the log
-mylog <- system.file("extdata", "helloworld.log", package = "taskscheduleR")
-cat(readLines(mylog), sep = "\\n")
 
 ## End(Not run)
 }

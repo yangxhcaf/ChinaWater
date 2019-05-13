@@ -1,4 +1,7 @@
 test_that("task_create works", {
+    skip_on_travis()
+    skip_on_cran()
+
     rscript <- quote({
         print(Sys.time())
         print(getwd())

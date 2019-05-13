@@ -10,7 +10,7 @@ login_cma <- function(user, pwd, times=3){
         username = user, # "991810576@qq.com",
         pwd = pwd,
         from = "wa",
-        url = "/app/Rest/userService/991810576@qq.com/Xiuyuan156//userLogin"
+        url = sprintf("/app/Rest/userService/%s/%s//userLogin", user, pwd)
     )
 
     status <- FALSE
@@ -99,8 +99,8 @@ rt_mete2000 <- function(
     }
 
     chunksize <- ifelse(type == "api", 30, 120)
-    nchunks  <- ceiling(length(stations)/chunksize)
-    lst_stations <- chunk(stations, n = nchunks)
+    nchunk  <- ceiling(length(stations)/chunksize)
+    lst_stations <- chunk(stations, nchunk)
 
     # timerange
     # date_end <- Sys.time() - 10
@@ -141,7 +141,7 @@ simplifyTimeRange <- function(timerange){
 #'
 #' @inheritParams curl_realtime
 #' @param timerange e.g. "[2019042818,2019050518]"
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' union_mete2000_files("OUTPUT/", "[2019042818,2019050518]")

@@ -18,6 +18,12 @@
 #' }
 #' @export
 task_stop <- function(taskname){
+    
+    if (.Platform$OS.type != "windows"){
+        message('This function only works in windows!')
+        return()
+    }
+
     cmd <- sprintf('schtasks /End /TN %s', shQuote(taskname, type = "cmd"))
     system(cmd, intern = FALSE)
 }
@@ -25,6 +31,12 @@ task_stop <- function(taskname){
 #' @rdname task_stop
 #' @export
 task_delete <- function(taskname){
+    
+    if (.Platform$OS.type != "windows"){
+        message('This function only works in windows!')
+        return()
+    }
+
     cmd <- sprintf('schtasks /Delete /TN %s /F', shQuote(taskname, type = "cmd"))
     system(cmd, intern = FALSE)
 }
@@ -46,6 +58,12 @@ task_delete <- function(taskname){
 #' }
 #' @export
 task_runnow <- function(taskname){
+    
+    if (.Platform$OS.type != "windows"){
+        message('This function only works in windows!')
+        return()
+    }
+
     cmd <- sprintf('schtasks /Run /TN %s', shQuote(taskname, type = "cmd"))
     system(cmd, intern = FALSE)
 }

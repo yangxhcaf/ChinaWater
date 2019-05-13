@@ -36,7 +36,7 @@ rtask_rt_ChinaWater <- quote({
 
     verb <- NULL
     outdir  <- "OUTPUT/ChinaWater"
-    d_rain  <- curl_realtime(rt_ChinaWater, type='rain', outdir = outdir, verb)
+    # d_rain  <- curl_realtime(rt_ChinaWater, type='rain', outdir = outdir, verb)
     d_river <- curl_realtime(rt_ChinaWater, type='river', outdir = outdir, verb)
     d_sk <- curl_realtime(rt_ChinaWater, type='reservoir', outdir = outdir, verb)
 
@@ -57,8 +57,8 @@ rtask_rt_mete2000 <- quote({
     info <- jsonlite::read_json('../user_cma.json')
     login_cma(info$user, info$pwd)
     d <- rt_mete2000(
-        date_begin = Sys.time() - ddays(2),
-        date_end = Sys.time(),
+        date_begin = Sys.time() - ddays(4),
+        date_end = Sys.time() - ddays(1),
         outdir = "OUTPUT/mete2000")
     cat("\n")
 })

@@ -23,6 +23,8 @@ column in the dataset the preceding \\ is removed
 Get all the tasks which are currently scheduled at the Windows task scheduler.
 }
 \examples{
+\dontrun{
 d <- task_ls()
 d
+}
 }
